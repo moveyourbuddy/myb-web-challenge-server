@@ -7,7 +7,7 @@ const uniqBy = require("lodash").uniqBy;
 const sortBy = require("lodash").sortBy;
 
 function getPlayer(playerId) {
-  const faker = Faker.getFaker(playerId);
+  const faker = Faker.getFaker(playerId * 2);
   const gender = faker.random.number(1);
 
   return {
@@ -68,7 +68,7 @@ function getEvent(eventId) {
   return {
     id: eventId,
     name: EVENT_NAMES[faker.random.number() % EVENT_NAMES.length],
-    date: faker.date.future(),
+    date: faker.date.future(0),
     participants: uniqBy(participants, "id")
   };
 }
