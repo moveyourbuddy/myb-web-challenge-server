@@ -2,7 +2,9 @@
  * Module dependencies.
  */
 const Faker = require("./faker");
+const dateFns = require("date-fns");
 const uniqBy = require("lodash").uniqBy;
+const sortBy = require("lodash").sortBy;
 
 function getPlayer(playerId) {
   const faker = Faker.getFaker(playerId);
@@ -39,6 +41,21 @@ function getFriends(playerId) {
   return uniqBy(friends, "id");
 }
 
+const EVENT_NAMES = [
+  "Running",
+  "Foot 5",
+  "Bowling",
+  "Tennis",
+  "Squash",
+  "Chistera",
+  "Padel",
+  "Canyoning",
+  "Golf",
+  "Paintball",
+  "Slackline",
+  "Taekwondo"
+];
+
 function getEvent(eventId) {
   const faker = Faker.getFaker(eventId);
 
@@ -50,7 +67,7 @@ function getEvent(eventId) {
 
   return {
     id: eventId,
-    name: faker.lorem.words(3),
+    name: EVENT_NAMES[faker.random.number() % EVENT_NAMES.length],
     date: faker.date.future(),
     participants: uniqBy(participants, "id")
   };
@@ -65,7 +82,7 @@ function getLastEvents(playerId) {
     events.push(getEvent(faker.random.number()));
   }
 
-  return uniqBy(events, "id");
+  return sortBy(uniqBy(events, "id"), "date", dateFns.compareAsc);
 }
 
 module.exports = {
